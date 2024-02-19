@@ -1,13 +1,14 @@
-import { Box, Button, Grid, Paper, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import React from 'react';
-import AddIcon from '@mui/icons-material/Add';
+import { Box, Button, Grid, Paper, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import React from "react";
+import AddIcon from "@mui/icons-material/Add";
+import CustomerDateTime from './Customer/CustomerDateTime';
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: 'center',
+  textAlign: "center",
   color: theme.palette.text.secondary,
 }));
 
@@ -19,27 +20,28 @@ function Customer() {
           <Item>xs=8</Item>
         </Grid>
         <Grid item xs={5} md={3}>
-          <Item>xs=4</Item>
+          <CustomerDateTime />
         </Grid>
         <Grid item xs={5} md={3}>
-          <Item>xs=4</Item>
+          <CustomerDateTime />
         </Grid>
         <Grid item xs={2} md={1}>
-        <Button
-              size="small"
-              sx={{
-                height: "35px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "5px",
-              }}
-              variant="contained"
-              color="primary"
-              
-              fullWidth
-            >
-              <AddIcon /><Typography sx={{ fontSize: "14px" }}>ADD</Typography></Button>
+          <Button
+            size="small"
+            sx={{
+              height: "35px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "5px",
+            }}
+            variant="contained"
+            color="primary"
+            fullWidth
+          >
+            <AddIcon />
+            <Typography sx={{ fontSize: "14px" }}>ADD</Typography>
+          </Button>
         </Grid>
       </Grid>
     </Box>

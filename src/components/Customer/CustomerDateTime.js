@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles";
 const SDateInput = styled(DatePicker)(({ theme }) => ({
   "& .MuiInputBase-root": {
     background: 'inputHouse.main',
-    borderRadius: "20px",
+    borderRadius: "3px",
     height: '36px',
     padding: "0px 4px",
     border: 'none'
@@ -30,19 +30,18 @@ const SDateInput = styled(DatePicker)(({ theme }) => ({
   },
 }));
 
-function SAddBillDateTime() {
+function DateTime() {
   return (
-    <DemoItem label="Date">
+    <DemoItem>
       <SDateInput
-      slotProps={{
-        field: { clearable: true },
-        textField: { size: "small" },
-      }}
+        slotProps={{
+          field: { clearable: true },
+          textField: { size: "small" },
+        }}
         onChange={(newValue) => console.log(newValue)}
-        format="DD MMMM, YYYY"
       />
     </DemoItem>
-  )
+  );
 }
 
-export default SAddBillDateTime;
+export default DateTime;
