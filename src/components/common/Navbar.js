@@ -34,7 +34,6 @@ function Navbar() {
     if (id) {
       AXIOS.get(`${API_Url}/login/${id}`)
         .then((res) => {
-          console.log(res.data.user);
           setUser(res.data.user);
         })
         .catch((err) => {
