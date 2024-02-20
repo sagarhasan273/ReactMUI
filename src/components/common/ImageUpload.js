@@ -26,6 +26,14 @@ export default function UploadButtons({ txt, formData, setFormData }) {
     }));
   };
 
+  const crossHandle = () => {
+    setFileDataURL(null);
+    setFormData((prev) => ({
+      ...prev,
+      image: '',
+    }));
+  }
+
   return (
     <Stack gap={1}>
       <Typography>{txt}</Typography>
@@ -64,6 +72,7 @@ export default function UploadButtons({ txt, formData, setFormData }) {
           />
           <Button
             sx={{ position: "absolute", top: 0, left: 72, p: 0, minWidth: 27 }}
+            onClick={crossHandle}
           >
             <CloseIcon />
           </Button>

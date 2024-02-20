@@ -5,7 +5,7 @@ import CustomerInputBase from "./CustomerInputBase";
 import { Button, Grid, Typography } from "@mui/material";
 import CustomerDrawer from "./CustomerDrawer";
 
-function CustomerFilter() {
+function CustomerFilter({ setUsers }) {
   const [state, setState] = useState(false);
 
   return (
@@ -37,7 +37,7 @@ function CustomerFilter() {
           <AddIcon />
           <Typography sx={{ fontSize: "14px" }}>ADD</Typography>
         </Button>
-        <CustomerDrawer state={state} setState={setState} />
+        <CustomerDrawer state={state} setState={setState} setUsers={setUsers} />
       </Grid>
     </Grid>
   );

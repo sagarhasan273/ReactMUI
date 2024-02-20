@@ -11,13 +11,13 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { API_Url } from "../../network/api";
-import AXIOS from '../../network/axios';
+import AXIOS from "../../network/axios";
 
 const inputDrawerStyle = {
   "& .MuiInputBase-input": { height: "15px" },
 };
 
-export default function CustomerDrawer({ state, setState }) {
+export default function CustomerDrawer({ state, setState, setUsers }) {
   const [formData, setFormData] = React.useState({
     key: "56c4a7ca54b76bd22d6fa47aba65358e",
     image: "",
@@ -38,8 +38,6 @@ export default function CustomerDrawer({ state, setState }) {
         "https://api.imgbb.com/1/upload",
         fData
       );
-
-      console.log("Image uploaded successfully:", response.data);
       toast.success("Image uploaded successfully !");
 
       const userData = {
@@ -50,14 +48,12 @@ export default function CustomerDrawer({ state, setState }) {
         phone: phone,
         image: response.data.data.display_url,
       };
-      console.log(userData);
 
-      const res = await AXIOS.post(`${API_Url}/user`, userData);
-      console.log("Data posted successfully:", res.data);
+      await AXIOS.post(`${API_Url}/user`, userData);
       toast.success("Data posted successfully !");
-
     } catch (error) {
       console.error("Error uploading image:", error);
+      toast.error("Error uploading image!");
     }
   };
 
