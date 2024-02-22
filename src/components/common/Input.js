@@ -1,6 +1,6 @@
 import React from 'react'
 import { Typography, InputBase, Stack } from "@mui/material";
-function Input({ txt, name, value, setChange, sx, ph, ast, here, type, hide }) {
+function Input({ txt, name, value, setChange, sx, ph, ast, here, type }) {
   return (
     <Stack>
       <Typography>{`${txt} ${ast ? ast : ''}`}</Typography>

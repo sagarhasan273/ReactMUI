@@ -6,8 +6,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ContextProvider from "./context";
 import AddChallan from "./components/AddChallan";
 import Quotation from "./components/Quotation";
-import Customer from "./components/Customer";
+import Customers from "./components/Customers";
 import Admin from "./components/Admin";
+import CustomerList from "./components/Customers/CustomerList";
 
 
 const router = createBrowserRouter([
@@ -36,8 +37,14 @@ const router = createBrowserRouter([
         element: <Quotation />,
       },
       {
-        path: '/customer',
-        element: <Customer />,
+        path: '/customers',
+        element: <Customers />,
+        children: [
+          {
+            path: '',
+            element: <CustomerList />
+          }
+        ]
       },
       {
         path: '/admin',

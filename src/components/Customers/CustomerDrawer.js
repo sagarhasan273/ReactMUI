@@ -8,16 +8,21 @@ import IconButton from "@mui/material/IconButton";
 import Input from "../common/Input";
 import ImageUpload from "../common/ImageUpload";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
-import { API_Url } from "../../network/api";
 import AXIOS from "../../network/axios";
 
 const inputDrawerStyle = {
   "& .MuiInputBase-input": { height: "15px" },
 };
 
-export default function CustomerDrawer({ state, setState, setUsers }) {
+export default function CustomerDrawer({
+  state,
+  setState,
+  setUsers,
+  toast,
+  refetch,
+}) {
   const [formData, setFormData] = React.useState({
     key: "56c4a7ca54b76bd22d6fa47aba65358e",
     image: "",
@@ -34,11 +39,16 @@ export default function CustomerDrawer({ state, setState, setUsers }) {
     fData.append("image", formData.image[0]);
 
     try {
-      const response = await axios.post(
-        "https://api.imgbb.com/1/upload",
-        fData
-      );
-      toast.success("Image uploaded successfully !");
+      const response = await axios
+        .post("https://api.imgbb.com/1/upload", fData)
+        .then((response) => {
+          return response;
+        });
+      if (response.status === 200 && response.data.success) {
+        toast.success("Image uploaded successfully!");
+      } else {
+        toast.error("Failed to upload image. Please try again later.");
+      }
 
       const userData = {
         name: name,
@@ -49,8 +59,17 @@ export default function CustomerDrawer({ state, setState, setUsers }) {
         image: response.data.data.display_url,
       };
 
-      await AXIOS.post(`${API_Url}/user`, userData);
-      toast.success("Data posted successfully !");
+      await AXIOS.post(`/user`, userData)
+        .then((response) => {
+          toast.success("Data posted successfully !");
+          setState(false);
+          refetch();
+          return response;
+        })
+        .catch((error) => {
+          console.error("Error data uploading:", error);
+          toast.error("Failed to post data. Please try again later.");
+        });
     } catch (error) {
       console.error("Error uploading image:", error);
       toast.error("Error uploading image!");
@@ -69,7 +88,6 @@ export default function CustomerDrawer({ state, setState, setUsers }) {
 
   const list = () => (
     <Stack sx={{ width: 230, p: 3, gap: "20px" }} role="presentation">
-      <ToastContainer position="top-center" autoClose={2000} />
       <Stack
         sx={{
           height: "30px",

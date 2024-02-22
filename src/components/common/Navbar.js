@@ -66,7 +66,7 @@ function Navbar() {
     Quotation: () => {
       return <NoteIcon />;
     },
-    Customer: () => {
+    Customers: () => {
       return <SupportAgentIcon />;
     },
     Admin: () => {
@@ -89,7 +89,7 @@ function Navbar() {
           "Add Bill",
           "Add Challan",
           "Quotation",
-          "Customer",
+          "Customers",
           "Admin",
         ].map((text, index) => (
           <ListItem key={text} disablePadding>

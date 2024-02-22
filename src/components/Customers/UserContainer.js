@@ -4,21 +4,37 @@ import { styled } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import React from "react";
 
+
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   color: theme.palette.text.secondary,
   height: 78,
-  display: 'flex',
-  alignItems: 'center',
-  padding: '5px',
-  paddingLeft: '10px',
+  display: "flex",
+  alignItems: "center",
+  padding: "5px",
+  paddingLeft: "10px",
   gap: 12,
   width: "300px",
-  borderRadius: '12px',
+  borderRadius: "12px",
+  "&:hover": {
+    cursor: "pointer",
+  },
 }));
 
+function UserContainer({ users = [], setBreadcrumbs, setId }) {
 
-function UserContainer({users=[]}) {
+
+  const handleClickUserCard = (user) => {
+    setId(user?._id);
+    setBreadcrumbs({
+      customerList: false,
+      customer: true
+    });
+    const url = new URL(window.location.href);
+      url.searchParams.set('_id', `${user?._id}`);
+      window.history.pushState({}, '', url);
+  };
+
   return (
     <Box
       sx={{
@@ -31,7 +47,11 @@ function UserContainer({users=[]}) {
       }}
     >
       {users.map((user, index) => (
-        <Item key={index} elevation={6}>
+        <Item
+          key={index}
+          elevation={6}
+          onClick={() => handleClickUserCard(user)}
+        >
           <Avatar
             alt="User Profile"
             src={user?.image}
@@ -39,8 +59,8 @@ function UserContainer({users=[]}) {
           />
           <Stack>
             <Typography color="primary.main">{user?.name}</Typography>
-            <Typography sx={{fontSize: '12px'}}>{user?.email}</Typography>
-            <Typography sx={{fontSize: '12px'}}>{user?.phone}</Typography>
+            <Typography sx={{ fontSize: "12px" }}>{user?.email}</Typography>
+            <Typography sx={{ fontSize: "12px" }}>{user?.phone}</Typography>
           </Stack>
         </Item>
       ))}
