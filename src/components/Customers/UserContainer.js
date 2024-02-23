@@ -1,9 +1,15 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
-import React from "react";
-
+import React, { useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { DeleteUserAdmin } from "../common/deleteUserAdmin";
+import { user_Url } from "../../network/api";
+import { useQueryClient } from "react-query";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -21,18 +27,40 @@ const Item = styled(Paper)(({ theme }) => ({
   },
 }));
 
+const moveLeftRight = {
+  position: "absolute",
+  animation: "moveLeftToRight .5s forwards",
+  "@keyframes moveLeftToRight": {
+    "0%": {
+      right: "35px",
+    },
+    "100%": {
+      right: "0px",
+    },
+  },
+};
+
 function UserContainer({ users = [], setBreadcrumbs, setId }) {
+  const [hover, setHover] = useState("");
+  const queryClient = useQueryClient();
 
-
-  const handleClickUserCard = (user) => {
+  const handleClickUserCard = (e, user) => {
+    e.preventDefault();
     setId(user?._id);
     setBreadcrumbs({
       customerList: false,
-      customer: true
+      customer: true,
     });
     const url = new URL(window.location.href);
-      url.searchParams.set('_id', `${user?._id}`);
-      window.history.pushState({}, '', url);
+    url.searchParams.set("_id", `${user?._id}`);
+    window.history.pushState({}, "", url);
+  };
+
+  const mouseEnterHandle = (e) => {
+    setHover(e.target.id);
+  };
+  const mouseLeaveHandle = () => {
+    setHover("");
   };
 
   return (
@@ -46,23 +74,43 @@ function UserContainer({ users = [], setBreadcrumbs, setId }) {
         gap: 3,
       }}
     >
+      <ToastContainer position="top-center" autoClose={1000} />
       {users.map((user, index) => (
-        <Item
+        <Stack
           key={index}
-          elevation={6}
-          onClick={() => handleClickUserCard(user)}
+          sx={{ position: "relative", width: "fit-content" }}
+          onMouseEnter={mouseEnterHandle}
+          onMouseLeave={mouseLeaveHandle}
         >
-          <Avatar
-            alt="User Profile"
-            src={user?.image}
-            sx={{ width: 64, height: 64 }}
-          />
-          <Stack>
-            <Typography color="primary.main">{user?.name}</Typography>
-            <Typography sx={{ fontSize: "12px" }}>{user?.email}</Typography>
-            <Typography sx={{ fontSize: "12px" }}>{user?.phone}</Typography>
-          </Stack>
-        </Item>
+          <Item
+            id={user._id}
+            elevation={6}
+            onClick={(e) => handleClickUserCard(e, user)}
+          >
+            <Avatar
+              alt="User Profile"
+              src={user?.image}
+              sx={{ width: 64, height: 64 }}
+            />
+            <Stack>
+              <Typography color="primary.main">{user?.name}</Typography>
+              <Typography sx={{ fontSize: "12px" }}>{user?.email}</Typography>
+              <Typography sx={{ fontSize: "12px" }}>{user?.phone}</Typography>
+            </Stack>
+          </Item>
+          {hover === user._id ? (
+            <Stack sx={moveLeftRight}>
+              <Button>
+                <EditIcon />
+              </Button>
+              <Button
+                onClick={() => DeleteUserAdmin(user_Url, user._id, queryClient, toast)}
+              >
+                <DeleteIcon />
+              </Button>
+            </Stack>
+          ) : null}
+        </Stack>
       ))}
     </Box>
   );

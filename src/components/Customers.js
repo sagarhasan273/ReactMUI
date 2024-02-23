@@ -8,6 +8,7 @@ import AXIOS from "../network/axios";
 import { user_Url } from "../network/api";
 import CustomerList from "./Customers/CustomerList";
 
+
 function Customers() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -25,6 +26,7 @@ function Customers() {
 
   return (
     <Box sx={{ p: 3 }}>
+      
       {breadcrumbs.customerList ? (
         <CustomerList
           users={users}

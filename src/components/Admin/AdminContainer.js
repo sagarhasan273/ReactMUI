@@ -67,7 +67,7 @@ function AdminContainer({ admins = [] }) {
           elevation={6}
           id={admin._id}
           onClick={() => handleClickAdminCard(admin)}
-          sx={{ display: "flex", position: "relative" }}
+          sx={{ position: "relative" }}
           onMouseEnter={mouseEnterHandle}
           onMouseLeave={mouseLeaveHandle}
         >

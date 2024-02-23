@@ -5,6 +5,7 @@ import Filter from "../common/Filter";
 function CustomerList({ setBreadcrumbs, users, setId }) {
   return (
     <Fragment>
+      
       <Filter type="add" from="customers" />
       <UserContainer
         setId={setId}

@@ -6,7 +6,6 @@ import { Button, Grid, Typography } from "@mui/material";
 import AdminDrawer from "../Admin/AdminDrawer";
 import CustomerDrawer from "../Customers/CustomerDrawer";
 import Model from "./Model";
-import { ToastContainer, toast } from "react-toastify";
 
 function Filter({ type, from }) {
   const [state, setState] = useState(false);
@@ -21,7 +20,7 @@ function Filter({ type, from }) {
 
   return (
     <Grid container spacing={1}>
-      <ToastContainer position="top-center" autoClose={2000} />
+      
       <Grid item xs={12} md={5}>
         <SearchInputBase />
       </Grid>
@@ -55,12 +54,10 @@ function Filter({ type, from }) {
         {(from === 'admins') ? <AdminDrawer
           state={state}
           setState={setState}
-          toast={toast}
         />: null}
         {(from === 'customers') ? <CustomerDrawer
           state={state}
           setState={setState}
-          toast={toast}
         />: null}
         <Model open={modelOpen} onClose={handleClose} />
       </Grid>

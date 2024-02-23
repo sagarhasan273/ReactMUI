@@ -8,10 +8,11 @@ import IconButton from "@mui/material/IconButton";
 import Input from "../common/Input";
 import ImageUpload from "../common/ImageUpload";
 import axios from "axios";
-
 import "react-toastify/dist/ReactToastify.css";
 import AXIOS from "../../network/axios";
 import { useQueryClient } from "react-query";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const inputDrawerStyle = {
   "& .MuiInputBase-input": { height: "15px", borderRadius: '15px', pl: 1.5 },
@@ -22,7 +23,6 @@ const inputDrawerStyle = {
 export default function CustomerDrawer({
   state,
   setState,
-  toast,
 }) {
   const [formData, setFormData] = React.useState({
     key: "56c4a7ca54b76bd22d6fa47aba65358e",
@@ -156,6 +156,7 @@ export default function CustomerDrawer({
 
   return (
     <React.Fragment key={"right"}>
+      <ToastContainer position="top-center" autoClose={1000} />
       <Drawer anchor="right" open={state} onClose={toggleDrawer(false)}>
         {list()}
       </Drawer>

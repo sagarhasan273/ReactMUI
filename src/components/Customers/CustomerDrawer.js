@@ -8,21 +8,15 @@ import IconButton from "@mui/material/IconButton";
 import Input from "../common/Input";
 import ImageUpload from "../common/ImageUpload";
 import axios from "axios";
-
-import "react-toastify/dist/ReactToastify.css";
 import AXIOS from "../../network/axios";
 import { useQueryClient } from "react-query";
+import { toast } from "react-toastify";
 
 const inputDrawerStyle = {
   "& .MuiInputBase-input": { height: "15px" },
 };
 
-export default function CustomerDrawer({
-  state,
-  setState,
-  setUsers,
-  toast,
-}) {
+export default function CustomerDrawer({ state, setState, setUsers }) {
   const [formData, setFormData] = React.useState({
     key: "56c4a7ca54b76bd22d6fa47aba65358e",
     image: "",
@@ -64,8 +58,13 @@ export default function CustomerDrawer({
       await AXIOS.post(`/user`, userData)
         .then((response) => {
           toast.success("Data posted successfully !");
+          queryClient.invalidateQueries("users");
+          setName("");
+          setAddress("");
+          setEmail("");
+          setVatNo("");
+          setPhone("");
           setState(false);
-          queryClient.invalidateQueries("users")
           return response;
         })
         .catch((error) => {
@@ -79,6 +78,11 @@ export default function CustomerDrawer({
   };
 
   const toggleDrawer = (open) => (event) => {
+    setName("");
+    setAddress("");
+    setEmail("");
+    setVatNo("");
+    setPhone("");
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -103,9 +107,7 @@ export default function CustomerDrawer({
           aria-label="close"
           color="inherit"
           size="small"
-          onClick={() => {
-            setState(false);
-          }}
+          onClick={toggleDrawer(false)}
         >
           <CloseIcon fontSize="inherit" />
         </IconButton>

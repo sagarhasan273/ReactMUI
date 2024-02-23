@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import Filter from "../common/Filter";
 import AdminContainer from "./AdminContainer";
 
-function CustomerList({ admins={} }) {
+function AdminList({ admins={} }) {
   return (
     <Fragment>
       <Filter type="add" from="admins" />
@@ -14,4 +14,4 @@ function CustomerList({ admins={} }) {
   );
 }
 
-export default CustomerList;
+export default AdminList;
