@@ -10,6 +10,7 @@ import { user_Url } from "../../network/api";
 import { useQueryClient } from "react-query";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CustomerEditDrawer from "./CustomerEditDrawer";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -42,6 +43,8 @@ const moveLeftRight = {
 
 function UserContainer({ users = [], setBreadcrumbs, setId }) {
   const [hover, setHover] = useState("");
+  const [user_id, setUser_id] = useState('');
+  const [state, setState] = useState(false);
   const queryClient = useQueryClient();
 
   const handleClickUserCard = (e, user) => {
@@ -63,6 +66,12 @@ function UserContainer({ users = [], setBreadcrumbs, setId }) {
     setHover("");
   };
 
+  const editHandle = (e, id) => {
+    e.preventDefault();
+    setUser_id(id);
+    setState(true);
+  }
+
   return (
     <Box
       sx={{
@@ -74,6 +83,7 @@ function UserContainer({ users = [], setBreadcrumbs, setId }) {
         gap: 3,
       }}
     >
+      <CustomerEditDrawer state={state} setState={setState} id={user_id} setId={setUser_id} />
       <ToastContainer position="top-center" autoClose={1000} />
       {users.map((user, index) => (
         <Stack
@@ -100,7 +110,7 @@ function UserContainer({ users = [], setBreadcrumbs, setId }) {
           </Item>
           {hover === user._id ? (
             <Stack sx={moveLeftRight}>
-              <Button>
+              <Button onClick={(e) => editHandle(e, user._id)} >
                 <EditIcon />
               </Button>
               <Button
