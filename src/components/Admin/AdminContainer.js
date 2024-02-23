@@ -5,6 +5,11 @@ import Avatar from "@mui/material/Avatar";
 import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { DeleteUserAdmin } from "../common/deleteUserAdmin";
+import { admin_Url } from "../../network/api";
+import { toast } from "react-toastify";
+import { useQueryClient } from "react-query";
+import "react-toastify/dist/ReactToastify.css";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -37,6 +42,7 @@ const moveLeftRight = {
 
 function AdminContainer({ admins = [] }) {
   const [hover, setHover] = useState('');
+  const queryClient = useQueryClient();
 
   const handleClickAdminCard = (admin) => {
     const url = new URL(window.location.href);
@@ -86,7 +92,7 @@ function AdminContainer({ admins = [] }) {
               <Button>
                 <EditIcon />
               </Button>
-              <Button>
+              <Button onClick={() => DeleteUserAdmin(admin_Url, admin._id, queryClient, toast, 'admins')}>
                 <DeleteIcon />
               </Button>
             </Stack>

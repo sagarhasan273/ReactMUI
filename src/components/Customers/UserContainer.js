@@ -104,7 +104,7 @@ function UserContainer({ users = [], setBreadcrumbs, setId }) {
                 <EditIcon />
               </Button>
               <Button
-                onClick={() => DeleteUserAdmin(user_Url, user._id, queryClient, toast)}
+                onClick={() => DeleteUserAdmin(user_Url, user._id, queryClient, toast, 'users')}
               >
                 <DeleteIcon />
               </Button>

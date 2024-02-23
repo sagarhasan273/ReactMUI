@@ -1,10 +1,10 @@
 import AXIOS from "../../network/axios";
 
-export const DeleteUserAdmin = async (url, id, queryClient, toast) => {
+export const DeleteUserAdmin = async (url, id, queryClient, toast, reload) => {
     
     await AXIOS.delete(`${url}/${id}`)
     .then((response) => {
-      queryClient.invalidateQueries("users");
+      queryClient.invalidateQueries(reload);
       toast.success('User deleted successfully !');
     })
     .catch((error) => {
