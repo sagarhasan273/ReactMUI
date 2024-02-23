@@ -1,11 +1,11 @@
 import React, { Fragment } from "react";
-import CustomerFilter from "./CustomerFilter";
 import UserContainer from "./UserContainer";
+import Filter from "../common/Filter";
 
-function CustomerList({ setBreadcrumbs, users, setId, refetch }) {
+function CustomerList({ setBreadcrumbs, users, setId }) {
   return (
     <Fragment>
-      <CustomerFilter type="add" refetch={refetch} />
+      <Filter type="add" from="customers" />
       <UserContainer
         setId={setId}
         setBreadcrumbs={setBreadcrumbs}

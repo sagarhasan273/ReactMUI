@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import CustomerDateTime from "./CustomerDateTime";
-import CustomerInputBase from "./CustomerInputBase";
+import CommonDateTime from "./CommonDateTime";
+import SearchInputBase from "./SearchInputBase";
 import { Button, Grid, Typography } from "@mui/material";
-import CustomerDrawer from "./CustomerDrawer";
-import Model from "../common/Model";
+import AdminDrawer from "../Admin/AdminDrawer";
+import CustomerDrawer from "../Customers/CustomerDrawer";
+import Model from "./Model";
 import { ToastContainer, toast } from "react-toastify";
 
-function CustomerFilter({ setUsers, type, refetch }) {
+function Filter({ type, from }) {
   const [state, setState] = useState(false);
   const [modelOpen, setModelOpen] = useState(false);
   const handleOpen = () => {
@@ -22,13 +23,13 @@ function CustomerFilter({ setUsers, type, refetch }) {
     <Grid container spacing={1}>
       <ToastContainer position="top-center" autoClose={2000} />
       <Grid item xs={12} md={5}>
-        <CustomerInputBase />
+        <SearchInputBase />
       </Grid>
       <Grid item xs={4.75} md={2.75}>
-        <CustomerDateTime />
+        <CommonDateTime />
       </Grid>
       <Grid item xs={4.75} md={2.75}>
-        <CustomerDateTime />
+        <CommonDateTime />
       </Grid>
       <Grid item xs={2.5} md={1.5}>
         <Button
@@ -51,17 +52,20 @@ function CustomerFilter({ setUsers, type, refetch }) {
           </Typography>
         </Button>
 
-        <CustomerDrawer
+        {(from === 'admins') ? <AdminDrawer
           state={state}
           setState={setState}
-          setUsers={setUsers}
           toast={toast}
-          refetch={refetch}
-        />
+        />: null}
+        {(from === 'customers') ? <CustomerDrawer
+          state={state}
+          setState={setState}
+          toast={toast}
+        />: null}
         <Model open={modelOpen} onClose={handleClose} />
       </Grid>
     </Grid>
   );
 }
 
-export default CustomerFilter;
+export default Filter;

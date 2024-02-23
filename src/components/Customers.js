@@ -1,11 +1,12 @@
 import { Box } from "@mui/material";
 import React, { useState } from "react";
-import CustomerList from "./Customers/CustomerList";
+
 import CustomerInfo from "./Customers/CustomerInfo";
 import { useLocation } from "react-router-dom";
 import { useQuery } from "react-query";
 import AXIOS from "../network/axios";
 import { user_Url } from "../network/api";
+import CustomerList from "./Customers/CustomerList";
 
 function Customers() {
   const location = useLocation();
@@ -21,12 +22,6 @@ function Customers() {
     return response.data;
   };
   const users = useQuery("users", fetchData);
-  const { data, isLoading, isError, refetch } = users;
-  console.log(data, isLoading, isError, refetch);
-
-  const refetchHandle = () => {
-    refetch();
-  }
 
   return (
     <Box sx={{ p: 3 }}>
@@ -35,7 +30,6 @@ function Customers() {
           users={users}
           setId={setId}
           setBreadcrumbs={setBreadcrumbs}
-          refetch={refetchHandle} 
         />
       ) : null}
       {breadcrumbs.customer ? (

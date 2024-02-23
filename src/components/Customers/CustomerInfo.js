@@ -5,9 +5,9 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import DashboardButtons from "../Dashboard/DashboardButton";
 import InfoCard from "../common/InfoCard";
-import CustomerFilter from "./CustomerFilter";
 import CommonTable from "../common/Table";
 import { useLocation } from 'react-router-dom';
+import Filter from "../common/Filter";
 
 const changeAbleButtonText = [
   {
@@ -150,7 +150,7 @@ function CustomerInfo({ users = {}, id, setBreadcrumbs }) {
         value={value}
         setValue={setValue}
       />
-      <CustomerFilter type="payment" />
+      <Filter type="payment" />
       <CommonTable columns={columns} rows={rows} />
     </Stack>
   );

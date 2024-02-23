@@ -14,13 +14,14 @@ import AXIOS from "../../network/axios";
 import { useQueryClient } from "react-query";
 
 const inputDrawerStyle = {
-  "& .MuiInputBase-input": { height: "15px" },
+  "& .MuiInputBase-input": { height: "15px", borderRadius: '15px', pl: 1.5 },
+  borderRadius: '20px',
+
 };
 
 export default function CustomerDrawer({
   state,
   setState,
-  setUsers,
   toast,
 }) {
   const [formData, setFormData] = React.useState({
@@ -28,9 +29,8 @@ export default function CustomerDrawer({
     image: "",
   });
   const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
+  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [vatNo, setVatNo] = useState("");
   const [phone, setPhone] = useState("");
 
   const queryClient = useQueryClient();
@@ -52,20 +52,21 @@ export default function CustomerDrawer({
         toast.error("Failed to upload image. Please try again later.");
       }
 
-      const userData = {
+      const adminData = {
         name: name,
-        address: address,
         email: email,
-        vatNo: vatNo,
+        password: password,
         phone: phone,
         image: response.data.data.display_url,
       };
 
-      await AXIOS.post(`/user`, userData)
+      console.log(adminData)
+
+      await AXIOS.post(`/admin`, adminData)
         .then((response) => {
           toast.success("Data posted successfully !");
           setState(false);
-          queryClient.invalidateQueries("users")
+          queryClient.invalidateQueries("admins")
           return response;
         })
         .catch((error) => {
@@ -118,13 +119,6 @@ export default function CustomerDrawer({
         setChange={setName}
       />
       <Input
-        txt="Address"
-        sx={{ ...inputDrawerStyle }}
-        ast="*"
-        value={address}
-        setChange={setAddress}
-      />
-      <Input
         txt="Phone"
         sx={{ ...inputDrawerStyle }}
         ast="*"
@@ -139,11 +133,11 @@ export default function CustomerDrawer({
         setChange={setEmail}
       />
       <Input
-        txt="VAT No"
+        txt="Password"
         sx={{ ...inputDrawerStyle }}
-        here="here"
-        value={vatNo}
-        setChange={setVatNo}
+        value={password}
+        type="password"
+        setChange={setPassword}
       />
       <ImageUpload
         txt="Profile Photo"

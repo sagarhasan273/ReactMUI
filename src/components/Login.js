@@ -14,10 +14,8 @@ import { useNavigate } from "react-router-dom";
 import { Stack } from "@mui/system";
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "admin@gmail.com",
-    password: "123456",
-  });
+  const [email, setEmail] = useState('sagarhasan273@gmail.com');
+  const [password, setPassword] = useState('123456');
   const [userValid, setUserValid] = useState(false);
   const navigate = useNavigate();
 
@@ -38,16 +36,11 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(formData);
+    mutate({
+      email: email,
+      password: password
+    });
     setUserValid(true);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
   };
 
   if (!userValid)
@@ -81,14 +74,14 @@ const Login = () => {
           <Input
             txt="Email"
             name="email"
-            value={formData.email}
-            setChange={handleChange}
+            value={email}
+            setChange={setEmail}
           />
           <Input
             txt="Password"
             name="password"
-            value={formData.password}
-            setChange={handleChange}
+            value={password}
+            setChange={setPassword}
           />
           <Button type="submit" variant="contained" color="primary" fullWidth>
             Log In
