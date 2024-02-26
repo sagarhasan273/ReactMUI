@@ -12,6 +12,7 @@ export default function UploadButtons({ txt, formData, setFormData }) {
   const theme = useTheme();
 
   const onDrop = (event) => {
+    event.preventDefault();
     const files = Array.from(event.target.files);
     const newFiles = files.map((file) =>
       Object.assign(file, {

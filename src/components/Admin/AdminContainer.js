@@ -9,7 +9,7 @@ import { DeleteUserAdmin } from "../common/deleteUserAdmin";
 import { admin_Url } from "../../network/api";
 import { toast } from "react-toastify";
 import { useQueryClient } from "react-query";
-import "react-toastify/dist/ReactToastify.css";
+import AdminEditDrawer from './AdminEditDrawer';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -40,8 +40,11 @@ const moveLeftRight = {
   },
 };
 
+
 function AdminContainer({ admins = [] }) {
   const [hover, setHover] = useState('');
+  const [admin_id, setAdmin_id] = useState('');
+  const [state, setState] = useState(false);
   const queryClient = useQueryClient();
 
   const handleClickAdminCard = (admin) => {
@@ -56,6 +59,12 @@ function AdminContainer({ admins = [] }) {
     setHover('');
   };
 
+  const editHandle = (e, id) => {
+    e.preventDefault();
+    setAdmin_id(id);
+    setState(true);
+  }
+
   return (
     <Box
       sx={{
@@ -67,6 +76,7 @@ function AdminContainer({ admins = [] }) {
         gap: 3,
       }}
     >
+      <AdminEditDrawer state={state} setState={setState} id={admin_id} setId={setAdmin_id} toasterHandle={toast} />
       {admins.map((admin, index) => (
         <Item
           key={index}
@@ -89,7 +99,7 @@ function AdminContainer({ admins = [] }) {
           </Stack>
           {hover === admin._id ? (
             <Stack sx={moveLeftRight}>
-              <Button>
+              <Button onClick={(e) => editHandle(e, admin._id)}>
                 <EditIcon />
               </Button>
               <Button onClick={() => DeleteUserAdmin(admin_Url, admin._id, queryClient, toast, 'admins')}>

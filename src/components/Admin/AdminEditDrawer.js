@@ -7,102 +7,111 @@ import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import Input from "../common/Input";
 import ImageUpload from "../common/ImageUpload";
+import axios from "axios";
 import AXIOS from "../../network/axios";
 import { useQuery, useQueryClient } from "react-query";
-import { toast } from "react-toastify";
-import { user_Url } from "../../network/api";
-import axios from "axios";
+import { admin_Url } from "../../network/api";
 
 const inputDrawerStyle = {
-  "& .MuiInputBase-input": { height: "15px" },
+  "& .MuiInputBase-input": { height: "15px", borderRadius: "15px", pl: 1.5 },
+  borderRadius: "20px",
 };
 
-export default function CustomerEditDrawer({ state, setState, id, setId }) {
+export default function AdminDrawer({
+  state,
+  setState,
+  id,
+  setId,
+  toasterHandle,
+}) {
   const [formData, setFormData] = React.useState({
     key: "56c4a7ca54b76bd22d6fa47aba65358e",
     image: "",
   });
-
   const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
+  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [vatNo, setVatNo] = useState("");
   const [phone, setPhone] = useState("");
+  const [image, setImage] = useState("");
 
   const queryClient = useQueryClient();
   const fetchData = async () => {
-    const response = await AXIOS.get(`${user_Url}/${id}`);
+    const response = await AXIOS.get(`${admin_Url}/${id}`);
     return response.data;
   };
-  
-  useQuery(['userData', id], fetchData, {
+  useQuery(["userData", id], fetchData, {
     onSuccess: (data) => {
       if (data?.status) {
-        setName(data?.user?.name || '');
-        setAddress(data?.user?.address || '');
-        setEmail(data?.user?.email || '');
-        setVatNo(data?.user?.vatNo || '');
-        setPhone(data?.user?.phone || '');
+        setName(data?.user?.name || "");
+        setEmail(data?.user?.email || "");
+        setPassword("");
+        setPhone(data?.user?.phone || "");
+        setImage(data?.user?.image || "");
       }
     },
   });
 
-  const handleImageUpload = async (e) => {
-    e.preventDefault();
+  const handleImageUpload = async () => {
     const fData = new FormData();
     fData.append("key", "56c4a7ca54b76bd22d6fa47aba65358e");
-    fData.append("image", formData.image[0]);
+    fData.append("image", formData.image[0] || image);
+
     try {
-      const response = await axios
-        .post("https://api.imgbb.com/1/upload", fData)
-        .then((response) => {
-          return response;
-        });
-      if (response.status === 200 && response.data.success) {
-        toast.success("Image uploaded successfully!");
-      } else {
-        toast.error("Failed to upload image. Please try again later.");
+      let response = null
+      if (image !== '') {
+        response = await axios
+          .post("https://api.imgbb.com/1/upload", fData)
+          .then((response) => {
+            return response;
+          });
+        if (response.status === 200 && response.data.success) {
+          toasterHandle.success("Image uploaded successfully!");
+        } else {
+          toasterHandle.error("Failed to upload image. Please try again later.");
+        }
       }
-      
-      const userData = {
+
+      const adminData = {
         name: name,
-        address: address,
         email: email,
-        vatNo: vatNo,
+        password: password,
         phone: phone,
-        image: response.data.data.display_url
+        image: response.data.data.display_url || image,
       };
 
-      await AXIOS.put(`${user_Url}/${id}`, userData)
+      await AXIOS.put(`${admin_Url}/${id}`, adminData)
         .then((response) => {
-          toast.success("Data posted successfully !");
-          queryClient.invalidateQueries("users");
+          toasterHandle.success("Data posted successfully !");
+          setId("");
           setName("");
-          setAddress("");
           setEmail("");
-          setVatNo("");
+          setPassword("");
           setPhone("");
-          setId('');
+          setImage('')
           setState(false);
+          queryClient.invalidateQueries("admins");
           return response;
         })
         .catch((error) => {
           console.error("Error data uploading:", error);
-          toast.error("Failed to post data. Please try again later.");
+          toasterHandle(
+            "error",
+            "Failed to post data. Please try again later."
+          );
         });
     } catch (error) {
       console.error("Error uploading image:", error);
-      toast.error("Error uploading image!");
+      toasterHandle("error", "Error uploading image!");
     }
   };
 
   const toggleDrawer = (open) => (event) => {
+    setId("");
     setName("");
-    setAddress("");
     setEmail("");
-    setVatNo("");
+    setPassword("");
     setPhone("");
-    setId('');
+    setState(false);
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -127,7 +136,9 @@ export default function CustomerEditDrawer({ state, setState, id, setId }) {
           aria-label="close"
           color="inherit"
           size="small"
-          onClick={toggleDrawer(false)}
+          onClick={() => {
+            setState(false);
+          }}
         >
           <CloseIcon fontSize="inherit" />
         </IconButton>
@@ -138,13 +149,6 @@ export default function CustomerEditDrawer({ state, setState, id, setId }) {
         ast="*"
         value={name}
         setChange={setName}
-      />
-      <Input
-        txt="Address"
-        sx={{ ...inputDrawerStyle }}
-        ast="*"
-        value={address}
-        setChange={setAddress}
       />
       <Input
         txt="Phone"
@@ -161,11 +165,11 @@ export default function CustomerEditDrawer({ state, setState, id, setId }) {
         setChange={setEmail}
       />
       <Input
-        txt="VAT No"
+        txt="Password"
         sx={{ ...inputDrawerStyle }}
-        here="here"
-        value={vatNo}
-        setChange={setVatNo}
+        value={password}
+        type="password"
+        setChange={setPassword}
       />
       <ImageUpload
         txt="Profile Photo"

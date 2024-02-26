@@ -43,7 +43,7 @@ const moveLeftRight = {
 
 function UserContainer({ users = [], setBreadcrumbs, setId }) {
   const [hover, setHover] = useState("");
-  const [user_id, setUser_id] = useState('');
+  const [user_id, setUser_id] = useState("");
   const [state, setState] = useState(false);
   const queryClient = useQueryClient();
 
@@ -70,7 +70,7 @@ function UserContainer({ users = [], setBreadcrumbs, setId }) {
     e.preventDefault();
     setUser_id(id);
     setState(true);
-  }
+  };
 
   return (
     <Box
@@ -83,7 +83,12 @@ function UserContainer({ users = [], setBreadcrumbs, setId }) {
         gap: 3,
       }}
     >
-      <CustomerEditDrawer state={state} setState={setState} id={user_id} setId={setUser_id} />
+      <CustomerEditDrawer
+        state={state}
+        setState={setState}
+        id={user_id}
+        setId={setUser_id}
+      />
       <ToastContainer position="top-center" autoClose={1000} />
       {users.map((user, index) => (
         <Stack
@@ -110,11 +115,19 @@ function UserContainer({ users = [], setBreadcrumbs, setId }) {
           </Item>
           {hover === user._id ? (
             <Stack sx={moveLeftRight}>
-              <Button onClick={(e) => editHandle(e, user._id)} >
+              <Button onClick={(e) => editHandle(e, user._id)}>
                 <EditIcon />
               </Button>
               <Button
-                onClick={() => DeleteUserAdmin(user_Url, user._id, queryClient, toast, 'users')}
+                onClick={() =>
+                  DeleteUserAdmin(
+                    user_Url,
+                    user._id,
+                    queryClient,
+                    toast,
+                    "users"
+                  )
+                }
               >
                 <DeleteIcon />
               </Button>

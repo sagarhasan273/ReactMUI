@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import Drawer from "@mui/material/Drawer";
@@ -23,6 +23,7 @@ import AXIOS from "../../network/axios";
 import getAllCookiesAsObject from "../../helper/cookie/getCookiesAsObject";
 import { API_Url } from "../../network/api";
 import { camelize } from "./camelize";
+import { deleteCookie } from "../../helper/cookie/deleteCookies";
 
 function Navbar() {
   const [menuState, setMenuState] = React.useState(false);
@@ -41,7 +42,7 @@ function Navbar() {
         });
     }
   }, []);
-  
+
   const toggleDrawer = () => (event) => {
     if (
       event.type === "keydown" &&
@@ -74,7 +75,20 @@ function Navbar() {
     },
   };
 
-  
+  const logoutButtonHandle = async () => {
+    delete AXIOS.defaults.headers.common["Authorization"];
+    deleteCookie("accessToken");
+    // Remove the _id cookie
+    deleteCookie("_id");
+    navigate("/login", { replace: true });
+  };
+  const signInButtonHandle = async () => {
+    delete AXIOS.defaults.headers.common["Authorization"];
+    deleteCookie("accessToken");
+    // Remove the _id cookie
+    deleteCookie("_id");
+    navigate("/login", { replace: true });
+  };
 
   const list = (anchor) => (
     <Box
@@ -150,28 +164,34 @@ function Navbar() {
         <Typography color="primary">
           <strong>{user.name}</strong>
         </Typography>
-        <LogoutIcon sx={{ cursor: "pointer", fontSize: "18px" }} />
-        {(user?.email) ? <Typography
-          to="/login"
-          style={{
-            textDecoration: "none",
-            fontSize: "14px",
-            cursor: "pointer",
-          }}
-          color="primary"
-        >
-          LogOut
-        </Typography> : <Typography
-          to="/login"
-          style={{
-            textDecoration: "none",
-            fontSize: "14px",
-            cursor: "pointer",
-          }}
-          color="primary"
-        >
-          Sign In
-        </Typography>}
+        {user?.email ? (
+          <Button onClick={logoutButtonHandle}>
+            <LogoutIcon sx={{ cursor: "pointer", fontSize: "18px" }} />
+            <Typography
+              style={{
+                textDecoration: "none",
+                fontSize: "14px",
+                cursor: "pointer",
+              }}
+              color="primary"
+            >
+              LogOut
+            </Typography>
+          </Button>
+        ) : (
+          <Button onClick={signInButtonHandle}>
+            <Typography
+              style={{
+                textDecoration: "none",
+                fontSize: "14px",
+                cursor: "pointer",
+              }}
+              color="primary"
+            >
+              Sign In
+            </Typography>
+          </Button>
+        )}
       </Box>
     </Box>
   );
