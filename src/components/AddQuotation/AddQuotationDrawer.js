@@ -6,6 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddQuotationInput from "../common/addQuotationInputs";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from '@mui/material/IconButton';
+// import TestQuotationDrawer from "./testQuotationDrawer";
 
 export default function AddQuotationDrawer({ state, setState }) {
   const toggleDrawer = (open) => (event) => {
@@ -57,6 +58,7 @@ export default function AddQuotationDrawer({ state, setState }) {
     <React.Fragment key={"right"}>
       <Drawer anchor="right" open={state} onClose={toggleDrawer(false)}>
         {list()}
+        {/* <TestQuotationDrawer /> */}
       </Drawer>
     </React.Fragment>
   );
